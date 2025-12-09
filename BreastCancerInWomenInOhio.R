@@ -1,4 +1,5 @@
-```title: Associations between Socioeconomic Factors and Breast Cancer Incidence in Ohio Counties
+---
+title: Associations between Socioeconomic Factors and Breast Cancer Incidence in Ohio Counties
 author: Olivia Ling and Jojo Yu
 date: November 28, 2025
 output:
@@ -6,10 +7,9 @@ output:
     toc: true
     toc_float: true
   pdf_document: default
-```
-```
+---
 ##0. setup
-
+```
 install.packages(c("tidyverse","readxl","ggthemes","maps","mapdata","stringr","ggmap"))
 
 library(tidyverse)
@@ -19,9 +19,9 @@ library(maps)
 library(mapdata)
 library(stringr)
 library(ggmap)
-
+```
 ## 1. Read & clean data
-
+```
 county_df <- read_excel("County data.xlsx", skip = 4) |>
   dplyr::rename(
     county      = `County`,
@@ -45,4 +45,22 @@ county_df <- read_excel("County data.xlsx", skip = 4) |>
   )
 
 glimpse(county_df)
+```
+## 2.
+```
+ru_summary <- county_df |>
+dplyr::count(rural_urban) |>
+dplyr::mutate(pct = round(100 * n / sum(n), 1))
+ru_summary
+
+app_summary <- county_df |>
+dplyr::count(app_flag) |>
+dplyr::mutate(pct = round(100 * n / sum(n), 1))
+app_summary
+
+cross_tab <- county_df |>
+dplyr::count(app_flag, rural_urban) |>
+dplyr::group_by(app_flag) |>
+dplyr::mutate(pct_within_app = round(100 * n / sum(n), 1))
+cross_tab
 ```
